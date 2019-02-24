@@ -1,5 +1,6 @@
 package com.example.weighthelper;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,9 +14,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void test(View v)
-    {
+   public void nextActivity(View v)
+   {
+       Intent intent = new Intent(MainActivity.this, UserScreen.class);
+       startActivity(intent);
 
-        Toast.makeText(this, "Hello Test", Toast.LENGTH_SHORT).show();
-    }
+   }
 }
