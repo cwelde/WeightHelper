@@ -10,4 +10,5 @@ public class UserScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_screen);
     }
+
 }
