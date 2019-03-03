@@ -1,14 +1,11 @@
 package com.example.weighthelper;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.weighthelper.database.DBHelper;
 import com.example.weighthelper.database.DataSource;
 
 public class MainActivity extends AppCompatActivity {
