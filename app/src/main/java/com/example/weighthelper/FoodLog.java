@@ -1,7 +1,9 @@
 package com.example.weighthelper;
 
 
-public class FoodLog { //entry for a food log
+import java.io.Serializable;
+
+public class FoodLog implements Serializable { //entry for a food log
     private String food;
     private String cal;
 

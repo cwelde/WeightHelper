@@ -1,7 +1,10 @@
 package com.example.weighthelper;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -39,6 +42,8 @@ public class FoodActivity extends AppCompatActivity {
 
     private String searchTerm; //user's search Term
 
+    //user data
+
     private ArrayList<FoodLog> logEntries = new ArrayList<>(100); //logged foods
     private int totalCalories = 0; //total all of calories consumed
 
@@ -49,6 +54,12 @@ public class FoodActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) { //restoring data when switching between activities
+            totalCalories = Integer.parseInt(extras.getString("cals"));
+            logEntries = (ArrayList<FoodLog>) extras.getSerializable("dayLog");
+            totalLog = (ArrayList<ArrayList<FoodLog>>) extras.getSerializable("totalLog");
+        }
         setContentView(R.layout.food_search);
         searchButton = findViewById(R.id.searchButton);
         text = findViewById(R.id.foodSearch);
@@ -71,6 +82,27 @@ public class FoodActivity extends AppCompatActivity {
         );
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        // Save UI state changes to the savedInstanceState.
+        // This bundle will be passed to onCreate if the process is
+        // killed and restarted.
+        savedInstanceState.putInt("cals",totalCalories);
+        savedInstanceState.putSerializable("dayLog",logEntries);
+        savedInstanceState.putSerializable("totalLog",totalLog);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        // Restore UI state from the savedInstanceState.
+        // This bundle has also been passed to onCreate.
+        totalCalories = savedInstanceState.getInt("cals");
+        logEntries = (ArrayList<FoodLog>) savedInstanceState.getSerializable("dayLog");
+        totalLog = (ArrayList<ArrayList<FoodLog>>) savedInstanceState.getSerializable("totalLog");
+    }
+
 
     public void searchFood(String food) {
         client = new FoodClient();
@@ -86,7 +118,7 @@ public class FoodActivity extends AppCompatActivity {
                     ndbnos = fs.getNdbnos();
                     setContentView(R.layout.food_search_results);
                     ArrayAdapter<String> adapt = new ArrayAdapter<String>(FoodActivity.this,R.layout.food_search_listview,names);
-                    ListView listView = (ListView) findViewById(R.id.foodList);
+                    ListView listView = findViewById(R.id.foodList);
                     listView.setAdapter(adapt);
                     TextView header = findViewById(R.id.header);
                     header.setText("Results for: " + searchTerm);
@@ -162,13 +194,14 @@ public class FoodActivity extends AppCompatActivity {
         logScreen(); //resets log screen
     }
 
-    public String getTotalCalories() { //returns total calories consumed in total food log
+    public String getTotalCalories() { //returns total calories consumed as a string in total food log
         return Integer.toString(totalCalories);
     }
 
     public void logScreen() { //goes to, sets food log display
         setContentView(R.layout.food_log);
         TableLayout table = findViewById(R.id.foodTable);
+
         for(int i = 0; i < logEntries.size(); i++) {
             TableRow row = new TableRow(this);
             String f = logEntries.get(i).getFood();
@@ -177,9 +210,14 @@ public class FoodActivity extends AppCompatActivity {
             fView.setText(""+f);
             fView.setTextSize(20);
             TextView cView = new TextView(this);
-            cView.setText(""+c);
+            cView.setText(""+c+" cals");
             cView.setTextSize(20);
+            cView.setGravity(Gravity.RIGHT);
+
+            TextView space = new TextView(this); //to separate name and col
+            space.setText("   ");
             row.addView(fView);
+            row.addView(space);
             row.addView(cView);
             table.addView(row);
         }
@@ -201,11 +239,23 @@ public class FoodActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        homeButton = findViewById(R.id.logHome);
+        homeButton.setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View view) {
+                        homeScreen();
+                    }
+                }
+        );
+
+
     }
 
     public void searchScreen() { //goes back to search screen to log another food item
         setContentView(R.layout.food_search);
         searchButton = findViewById(R.id.searchButton);
+        text = findViewById(R.id.foodSearch);
         searchButton.setOnClickListener(
                 new View.OnClickListener() {
                     public void onClick(View view) {
@@ -223,6 +273,23 @@ public class FoodActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        homeButton = findViewById(R.id.homeButton);
+        homeButton.setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View view) {
+                        homeScreen();
+                    }
+                }
+        );
+    }
+
+    public void homeScreen() { //goes to home screen, updates total calories
+        Intent i = new Intent(FoodActivity.this,UserScreen.class);
+        i.putExtra("cals", getTotalCalories());
+        i.putExtra("dayLog",logEntries);
+        i.putExtra("totalLog",totalLog);
+        startActivity(i);
     }
 
 }

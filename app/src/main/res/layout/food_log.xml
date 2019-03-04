@@ -43,6 +43,7 @@
         android:layout_height="match_parent"
         android:shrinkColumns="0"
         android:id="@+id/foodTable"
+        android:stretchColumns="0,1,2"
         android:layout_below="@+id/logheader">
 
 
