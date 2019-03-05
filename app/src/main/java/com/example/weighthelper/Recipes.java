@@ -6,7 +6,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 
 public class Recipes {
-    public Recipes(int protein, int fat, int carbs, int calories) {
+    public  Recipes(int protein, int fat, int carbs, int calories) {
         int minProt = protein - 3;
         int maxProt = protein + 3;
         int minFat = fat - 3;
