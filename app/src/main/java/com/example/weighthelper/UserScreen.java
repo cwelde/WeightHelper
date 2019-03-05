@@ -28,6 +28,9 @@ public class UserScreen extends AppCompatActivity {
                         Intent intent = new Intent(UserScreen.this,FoodActivity.class);
                         if (extras != null) { //when changing back to food activity, transfer information
                             intent.putExtra("cals", extras.getString("cals"));
+                            intent.putExtra("fats", extras.getString("fats"));
+                            intent.putExtra("carbs", extras.getString("carbs"));
+                            intent.putExtra("proteins", extras.getString("proteins"));
                             intent.putExtra("dayLog", extras.getSerializable("dayLog"));
                             intent.putExtra("totalLog", extras.getSerializable("totalLog"));
                         }
