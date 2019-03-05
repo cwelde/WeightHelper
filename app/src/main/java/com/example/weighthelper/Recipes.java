@@ -1,4 +1,12 @@
 package com.example.weighthelper;
+import android.os.Bundle;
+import android.app.Activity;
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.widget.TextView;
+
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
@@ -6,6 +14,12 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 
 public class Recipes {
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.sensor_main);
+    }
+
     public  Recipes(int protein, int fat, int carbs, int calories) {
         int minProt = protein - 3;
         int maxProt = protein + 3;
