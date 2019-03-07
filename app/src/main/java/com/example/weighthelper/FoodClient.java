@@ -12,7 +12,7 @@ public class FoodClient {
     }
 
     public void searchFood(String food, JsonHttpResponseHandler handler) {
-        String foodUrl = "search/?format=json&q="+food+"&sort=n&max=25&offset=0&api_key="+API_KEY;
+        String foodUrl = "search/?format=json&q="+food+"&sort=r&max=25&offset=0&api_key="+API_KEY;
         String url = getApiUrl(foodUrl);
         client.get(url,handler);
     }

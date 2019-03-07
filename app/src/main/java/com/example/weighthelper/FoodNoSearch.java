@@ -10,7 +10,10 @@ public class FoodNoSearch { //search with ndbno
     private String food; //name
     private String ndbno;
     private ArrayList<String> measurements; //default: 100 grams. measures: label
-    private ArrayList<String> cals; //label: "name: "kcal"", measures: value. default: 100 grams
+    private ArrayList<String> cals; //"unit: "kcal"", measures: value. default: 100 grams
+    private ArrayList<String> proteins; //"name: "Protein"", measures: value. in grams
+    private ArrayList<String> fats; //name: Total lipid (fat). in grams
+    private ArrayList<String> carbs; //name: "Carbohydrate, by difference" in grams
 
 
     public String getFood() {
@@ -29,10 +32,16 @@ public class FoodNoSearch { //search with ndbno
         return cals;
     }
 
+    public ArrayList<String> getProteins() { return proteins; }
+
+    public ArrayList<String> getFats() { return fats; }
+
+    public ArrayList<String> getCarbs() { return carbs; }
+
 
     public static ArrayList<String> allMeasurement(JSONArray jsonArray) {
         ArrayList<String> measurements = new ArrayList<String>(jsonArray.length()+1);
-        measurements.add("100 grams"); //default value for measurement
+        measurements.add("100 grams (default)"); //default value for measurement
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject measure = null;
             String m = null;
@@ -51,28 +60,26 @@ public class FoodNoSearch { //search with ndbno
         return measurements;
     }
 
-    public static ArrayList<String> allCal(JSONArray jsonArray,ArrayList<String> calArray) {
+    public static ArrayList<String> allNutrient(JSONArray jsonArray,ArrayList<String> oArray) {
         for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject cal = null;
+            JSONObject o = null;
             String c = null;
             try {
-                cal = jsonArray.getJSONObject(i);
-                c = cal.getString("value");
+                o = jsonArray.getJSONObject(i);
+                c = o.getString("value");
             } catch (Exception e) {
                 e.printStackTrace();
                 continue;
             }
 
             if (c != null) {
-                calArray.add(c);
+                oArray.add(c);
             }
         }
-        return calArray;
+        return oArray;
     }
 
-    public String chooseMeasurement() {
-        return "";
-    }
+
 
     public static FoodNoSearch fromJson(JSONObject jsonObject) { //label: measurement
         FoodNoSearch fns = new FoodNoSearch();
@@ -84,16 +91,38 @@ public class FoodNoSearch { //search with ndbno
             JSONArray measurements = null;
             for (int i = 0; i < nutrients.length(); i++) {
                 String name = nutrients.getJSONObject(i).getString("unit");
-                if (name.equals("kcal")) {
+                String name2 = nutrients.getJSONObject(i).getString("name");
+                if (name.equals("kcal")) { //calories
                     measurements = nutrients.getJSONObject(i).getJSONArray("measures");
                     fns.cals = new ArrayList<>(measurements.length()+1);
-                    fns.cals.add(nutrients.getJSONObject(i).getString("value")); //default calorie value for 100 grams
-                    break;
+                    fns.cals.add(nutrients.getJSONObject(i).getString("value")); //default value for 100 grams
+                    fns.cals = allNutrient(measurements,fns.cals);
+                    fns.measurements = allMeasurement(measurements); //add measurements, same for every nutrient
+
                 }
-            }
-            if (measurements != null) {
-                fns.measurements = allMeasurement(measurements);
-                fns.cals = allCal(measurements,fns.cals);
+
+                if (name2.equals("Protein")) {
+                    measurements = nutrients.getJSONObject(i).getJSONArray("measures");
+                    fns.proteins = new ArrayList<>(measurements.length()+1);
+                    fns.proteins.add(nutrients.getJSONObject(i).getString("value")); //default value for 100 grams
+                    fns.proteins = allNutrient(measurements,fns.proteins);
+                }
+
+                if (name2.equals("Total lipid (fat)")) {
+                    measurements = nutrients.getJSONObject(i).getJSONArray("measures");
+                    fns.fats = new ArrayList<>(measurements.length()+1);
+                    fns.fats.add(nutrients.getJSONObject(i).getString("value")); //default value for 100 grams
+                    fns.fats = allNutrient(measurements,fns.fats);
+
+                }
+
+                if (name2.equals("Carbohydrate, by difference")) {
+                    measurements = nutrients.getJSONObject(i).getJSONArray("measures");
+                    fns.carbs = new ArrayList<>(measurements.length()+1);
+                    fns.carbs.add(nutrients.getJSONObject(i).getString("value")); //default value for 100 grams
+                    fns.carbs = allNutrient(measurements,fns.carbs);
+
+                }
             }
 
         } catch (JSONException e) {

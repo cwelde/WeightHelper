@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="New Log"/>
+        android:text="New Log" />
 
     <TextView
         android:id="@+id/logheader"
@@ -37,14 +37,25 @@
         android:text="Food Log"
         android:textAlignment="center"
         android:layout_below="@+id/logHome"/>
-
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:shrinkColumns="0"
-        android:id="@+id/foodTable"
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="none"
+        android:layout_weight="1"
         android:layout_below="@+id/logheader">
 
+        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:shrinkColumns="0"
+            android:id="@+id/foodTable"
+            android:stretchColumns="0,1,2"
+            android:layout_below="@+id/logheader">
 
-    </TableLayout>
+
+        </TableLayout>
+
+    </ScrollView>
+
+
 </RelativeLayout>
