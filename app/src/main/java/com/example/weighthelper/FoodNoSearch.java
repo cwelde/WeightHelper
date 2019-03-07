@@ -92,24 +92,22 @@ public class FoodNoSearch { //search with ndbno
             for (int i = 0; i < nutrients.length(); i++) {
                 String name = nutrients.getJSONObject(i).getString("unit");
                 String name2 = nutrients.getJSONObject(i).getString("name");
+                measurements = nutrients.getJSONObject(i).getJSONArray("measures");
+                fns.measurements = allMeasurement(measurements); //add measurements, same for every nutrient
                 if (name.equals("kcal")) { //calories
-                    measurements = nutrients.getJSONObject(i).getJSONArray("measures");
                     fns.cals = new ArrayList<>(measurements.length()+1);
                     fns.cals.add(nutrients.getJSONObject(i).getString("value")); //default value for 100 grams
                     fns.cals = allNutrient(measurements,fns.cals);
-                    fns.measurements = allMeasurement(measurements); //add measurements, same for every nutrient
 
                 }
 
                 if (name2.equals("Protein")) {
-                    measurements = nutrients.getJSONObject(i).getJSONArray("measures");
                     fns.proteins = new ArrayList<>(measurements.length()+1);
                     fns.proteins.add(nutrients.getJSONObject(i).getString("value")); //default value for 100 grams
                     fns.proteins = allNutrient(measurements,fns.proteins);
                 }
 
                 if (name2.equals("Total lipid (fat)")) {
-                    measurements = nutrients.getJSONObject(i).getJSONArray("measures");
                     fns.fats = new ArrayList<>(measurements.length()+1);
                     fns.fats.add(nutrients.getJSONObject(i).getString("value")); //default value for 100 grams
                     fns.fats = allNutrient(measurements,fns.fats);
@@ -117,7 +115,6 @@ public class FoodNoSearch { //search with ndbno
                 }
 
                 if (name2.equals("Carbohydrate, by difference")) {
-                    measurements = nutrients.getJSONObject(i).getJSONArray("measures");
                     fns.carbs = new ArrayList<>(measurements.length()+1);
                     fns.carbs.add(nutrients.getJSONObject(i).getString("value")); //default value for 100 grams
                     fns.carbs = allNutrient(measurements,fns.carbs);

@@ -38,7 +38,6 @@ public class UserScreen extends AppCompatActivity {
 
 
 
-
     }
 
     public void userScreen() {
@@ -49,12 +48,16 @@ public class UserScreen extends AppCompatActivity {
                     public void onClick(View view) {
                         Intent intent = new Intent(UserScreen.this,FoodActivity.class);
                         if (extras != null) { //when changing back to food activity, transfer information
-                            intent.putExtra("cals", extras.getString("cals"));
-                            intent.putExtra("fats", extras.getString("fats"));
-                            intent.putExtra("carbs", extras.getString("carbs"));
-                            intent.putExtra("proteins", extras.getString("proteins"));
-                            intent.putExtra("dayLog", extras.getSerializable("dayLog"));
-                            intent.putExtra("totalLog", extras.getSerializable("totalLog"));
+                            if (extras.containsKey("totalLog")) {
+                                Bundle foodBundle = new Bundle();
+                                foodBundle.putString("cals", extras.getString("cals"));
+                                foodBundle.putString("fats", extras.getString("fats"));
+                                foodBundle.putString("carbs", extras.getString("carbs"));
+                                foodBundle.putString("proteins", extras.getString("proteins"));
+                                foodBundle.putSerializable("dayLog", extras.getSerializable("dayLog"));
+                                foodBundle.putSerializable("totalLog", extras.getSerializable("totalLog"));
+                                intent.putExtra("foodBundle", foodBundle);
+                            }
                         }
                         startActivity(intent);
                     }
@@ -73,7 +76,8 @@ public class UserScreen extends AppCompatActivity {
 
         cals = findViewById(R.id.textView6);
         if (extras != null) { //set cals eaten
-            cals.setText(extras.getString("cals"));
+            if (extras.containsKey("cals"))
+                cals.setText(extras.getString("cals"));
         }
 
     }
