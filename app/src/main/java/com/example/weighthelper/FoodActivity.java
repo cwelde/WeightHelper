@@ -68,12 +68,15 @@ public class FoodActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Bundle extras = getIntent().getExtras();
         if (extras != null) { //restoring data when switching between activities
-            totalCalories = Integer.parseInt(extras.getString("cals"));
-            logEntries = (ArrayList<FoodLog>) extras.getSerializable("dayLog");
-            totalLog = (ArrayList<ArrayList<FoodLog>>) extras.getSerializable("totalLog");
-            totalCarbs = Float.parseFloat(extras.getString("carbs"));
-            totalFats = Float.parseFloat(extras.getString("fats"));
-            totalProteins = Float.parseFloat(extras.getString("proteins"));
+            if (extras.containsKey("foodBundle")) {
+                Bundle fBundle = extras.getBundle("foodBundle");
+                totalCalories = Integer.parseInt(fBundle.getString("cals"));
+                logEntries = (ArrayList<FoodLog>) fBundle.getSerializable("dayLog");
+                totalLog = (ArrayList<ArrayList<FoodLog>>) fBundle.getSerializable("totalLog");
+                totalCarbs = Float.parseFloat(fBundle.getString("carbs"));
+                totalFats = Float.parseFloat(fBundle.getString("fats"));
+                totalProteins = Float.parseFloat(fBundle.getString("proteins"));
+            }
         }
         setContentView(R.layout.food_search);
         searchButton = findViewById(R.id.searchButton);
@@ -174,6 +177,14 @@ public class FoodActivity extends AppCompatActivity {
         return logEntries;
     }
 
+    public ArrayList<String> isNull(ArrayList<String> measures) { //sometimes doesn't have all information????
+        ArrayList<String> n = new ArrayList<>(measures.size());
+        for (int i = 0; i < measures.size(); i++) {
+            n.add("0");
+        }
+        return n;
+    }
+
     public void searchNDBno(String ndbno) {
         client = new FoodClient();
         client.searchNDBno(ndbno, new JsonHttpResponseHandler() {
@@ -185,9 +196,14 @@ public class FoodActivity extends AppCompatActivity {
                     FoodNoSearch fns = FoodNoSearch.fromJson(r);
                     measures = fns.getMeasurements();
                     cals = fns.getCals();
+                    if (cals == null) cals = isNull(measures);
                     fats = fns.getFats();
+                    if (fats== null) fats = isNull(measures);
                     carbs = fns.getCarbs();
+                    if (carbs == null) carbs = isNull(measures);
                     proteins = fns.getProteins();
+                    if (proteins == null) proteins = isNull(measures);
+
 
                     setContentView(R.layout.food_measurement_results);
                     ArrayAdapter<String> adapt = new ArrayAdapter<String>(FoodActivity.this,R.layout.food_search_listview,measures);
@@ -225,8 +241,12 @@ public class FoodActivity extends AppCompatActivity {
     }
 
     public void newDay() { //adds current food log to list of logs, starts a new day (foodlog)
-        totalLog.add(getLogEntries());
+        totalLog.add(getLogEntries()); //add to list of logs
         logEntries.clear();
+        totalCalories = 0;
+        totalCarbs = 0;
+        totalProteins = 0;
+        totalFats = 0;
         logScreen(); //resets log screen
     }
 
