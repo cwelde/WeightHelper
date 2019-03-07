@@ -32,6 +32,8 @@ public class UserScreen extends AppCompatActivity {
         TextView textView3 = (TextView) findViewById(R.id.weightView);
         textView3.setText(s2);
 
+        String z;
+
 
 
 
