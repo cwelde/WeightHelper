@@ -7,10 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.weighthelper.database.DBHelper;
+
 public class UserScreen extends AppCompatActivity {
     Button foodLogBtn;
     Button activityBtn;
     TextView cals;
+
+    DBHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +37,18 @@ public class UserScreen extends AppCompatActivity {
         TextView textView3 = (TextView) findViewById(R.id.weightView);
         textView3.setText(s2);
 
-        String z;
+        String username = bundle.getString("username");
+        double goal = bundle.getDouble("goal");
+        String s3 = "" + goal;
 
-
+        TextView textView4 = findViewById(R.id.goalView);
+        textView4.setText(s3);
 
 
     }
 
     public void userScreen() {
-        final Bundle extras = getIntent().getExtras(); //passing information between activities
+        final Bundle extras = getIntent().getExtras();
         foodLogBtn = findViewById(R.id.button2);
         foodLogBtn.setOnClickListener(
                 new View.OnClickListener() {
