@@ -43,7 +43,8 @@ public class UserScreen extends AppCompatActivity {
 
         TextView textView4 = findViewById(R.id.goalView);
         textView4.setText(s3);
-
+        db = new DBHelper(getApplicationContext());
+        long id = db.insertUser(username,bmi,w,cal,goal);
 
     }
 
