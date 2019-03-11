@@ -2,9 +2,9 @@ package com.example.weighthelper.database;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.weighthelper.FoodLog;
 
 public class UserInfo {
+    //each entry in the database is the information for one day
 
     public static final String TABLE_INFO = "info";
     public static final String COLUMN_ID = "userId";
@@ -25,7 +25,7 @@ public class UserInfo {
                     COLUMN_WEIGHT + " REAL," +
                     COLUMN_BMI + " REAL," +
                     COLUMN_CAL + " REAL," +
-                    COLUMN_GOAL + " REAL" +
+                    COLUMN_GOAL + " REAL," +
                     COLUMN_TOTAL_CAL + " REAL," +
                     COLUMN_TOTAL_CARB + " REAL," +
                     COLUMN_TOTAL_FAT + " REAL," +

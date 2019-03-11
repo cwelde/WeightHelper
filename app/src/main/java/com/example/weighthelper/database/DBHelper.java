@@ -2,6 +2,7 @@ package com.example.weighthelper.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -17,7 +18,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String DB_FILE_NAME = "weightHelper.db";
     public static final  int DB_VERSION = 1;
-    SQLiteDatabase db;
 
     public DBHelper(Context context) {
         super(context, DB_FILE_NAME, null, DB_VERSION);
@@ -34,6 +34,20 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(UserInfo.SQL_CREATE);
     }
 
+    public boolean doesUserExist(String username) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String select = "SELECT * FROM " + UserInfo.TABLE_INFO + " WHERE " + UserInfo.COLUMN_USERNAME
+                + " =?";
+        Cursor cursor = db.rawQuery(select, new String[] {username});
+        boolean exist = false;
+        if (cursor.moveToFirst()) {
+            exist = true;
+        }
+
+        cursor.close();
+        db.close();
+        return exist;
+    }
 
     public long insertUser(String username,double bmi,double weight,double cal,double goal) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -53,10 +67,36 @@ public class DBHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    public long setNutrition(String username,double totalCal,double totalProtein,double totalCarb, double totalFat) { //sets user record with total calories
+    public long getLastInsertID() {
         SQLiteDatabase db = this.getWritableDatabase();
-        long id = 0;
+        String get = "SELECT " + UserInfo.COLUMN_ID + " FROM " + UserInfo.TABLE_INFO +"";
+        Cursor cursor = db.rawQuery(get,null);
+        cursor.moveToLast();
+        long id = cursor.getLong(0);
         return id;
+    }
+
+    public boolean setNutrition(long id,double totalCal,double totalProtein,double totalCarb, double totalFat) { //sets user record with total calories
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String updateCal = "UPDATE " + UserInfo.TABLE_INFO + " SET " + UserInfo.COLUMN_TOTAL_CAL + " ="
+                +totalCal+ " WHERE " + UserInfo.COLUMN_ID + " = " + id + "";
+
+        String updateCarb = "UPDATE " + UserInfo.TABLE_INFO + " SET " + UserInfo.COLUMN_TOTAL_CARB + " ="
+                +totalCarb+ " WHERE " + UserInfo.COLUMN_ID + " = " + id + "";
+
+        String updateFat = "UPDATE " + UserInfo.TABLE_INFO + " SET " + UserInfo.COLUMN_TOTAL_FAT + " ="
+                +totalFat+ " WHERE " + UserInfo.COLUMN_ID + " = " + id + "";
+
+        String updateProtein = "UPDATE " + UserInfo.TABLE_INFO + " SET " + UserInfo.COLUMN_TOTAL_PROTEIN + " ="
+                +totalProtein+ " WHERE " + UserInfo.COLUMN_ID + " = " + id + "";
+
+        db.execSQL(updateCal);
+        db.execSQL(updateCarb);
+        db.execSQL(updateFat);
+        db.execSQL(updateProtein);
+
+        return true;
     }
 
 
