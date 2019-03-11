@@ -64,14 +64,22 @@ public class MainActivity extends AppCompatActivity {
        BMI=Math.floor(BMI);      // this sets a to 354
        BMI=BMI/100;
 
+       //Username
+       EditText edit3 = findViewById(R.id.username);
+       String username = edit3.getText().toString();
 
+       //Goal
+       EditText edit4 = findViewById(R.id.goalText);
+       String goal = edit4.getText().toString();
+       double goalFinal = Double.parseDouble(goal);
 
        Bundle bundle = new Bundle();
 
        bundle.putDouble("bmi", BMI);
        bundle.putDouble("cal",recCalories);
        bundle.putDouble("weight",weightFinal);
-
+       bundle.putString("username",username);
+       bundle.putDouble("goal",goalFinal);
 
 
        intent.putExtras(bundle);

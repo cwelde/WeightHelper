@@ -7,20 +7,30 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.weighthelper.database.DBHelper;
+
 public class UserScreen extends AppCompatActivity {
     Button foodLogBtn;
     Button activityBtn;
     TextView cals;
+    private String username;
+    private double bmi;
+    private double cal;
+    private double w;
+    private double goal;
+    Bundle extras;
+
+    DBHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_screen);
-        userScreen();
+
         Bundle bundle = getIntent().getExtras();
-        double bmi = bundle.getDouble("bmi");
-        double cal = bundle.getDouble("cal");
-        double w = bundle.getDouble("weight");
+        bmi = bundle.getDouble("bmi");
+        cal = bundle.getDouble("cal");
+        w = bundle.getDouble("weight");
         String s = "" + cal;
         String s1 = "" + bmi;
         String s2 = "" + w;
@@ -33,15 +43,54 @@ public class UserScreen extends AppCompatActivity {
         TextView textView3 = (TextView) findViewById(R.id.weightView);
         textView3.setText(s2);
 
-        String z;
+        username = bundle.getString("username");
+        goal = bundle.getDouble("goal");
+        String s3 = "" + goal;
+
+        TextView textView4 = findViewById(R.id.goalView);
+        textView4.setText(s3);
+
+        cals = findViewById(R.id.textView6);
+        String test;
+        if (bundle.containsKey("cals")) {
+            test = bundle.getString("cals");
+            cals.setText(bundle.getString("cals"));}
 
 
+        //insert user into db if username hasn't been registered yet
+        db = new DBHelper(getApplicationContext());
+        if (!db.doesUserExist(username))
+            db.insertUser(username,bmi,w,cal,goal);
 
+        userScreen();
 
     }
 
+    public Bundle fBundleHelper() {
+        final Bundle extras = getIntent().getExtras();
+        Bundle foodBundle = new Bundle();
+        foodBundle.putString("cals", extras.getString("cals"));
+        foodBundle.putString("fats", extras.getString("fats"));
+        foodBundle.putString("carbs", extras.getString("carbs"));
+        foodBundle.putString("proteins", extras.getString("proteins"));
+        foodBundle.putSerializable("dayLog", extras.getSerializable("dayLog"));
+        foodBundle.putSerializable("totalLog", extras.getSerializable("totalLog"));
+        return foodBundle;
+    }
+
+    public Bundle uBundleHelper() {
+        Bundle userBundle = new Bundle();
+        userBundle.putString("username",username);
+        userBundle.putDouble("bmi",bmi);
+        userBundle.putDouble("cal",cal);
+        userBundle.putDouble("weight",w);
+        userBundle.putDouble("goal",goal);
+        return userBundle;
+    }
+
+
     public void userScreen() {
-        final Bundle extras = getIntent().getExtras(); //passing information between activities
+        extras = getIntent().getExtras();
         foodLogBtn = findViewById(R.id.button2);
         foodLogBtn.setOnClickListener(
                 new View.OnClickListener() {
@@ -49,16 +98,11 @@ public class UserScreen extends AppCompatActivity {
                         Intent intent = new Intent(UserScreen.this,FoodActivity.class);
                         if (extras != null) { //when changing back to food activity, transfer information
                             if (extras.containsKey("totalLog")) {
-                                Bundle foodBundle = new Bundle();
-                                foodBundle.putString("cals", extras.getString("cals"));
-                                foodBundle.putString("fats", extras.getString("fats"));
-                                foodBundle.putString("carbs", extras.getString("carbs"));
-                                foodBundle.putString("proteins", extras.getString("proteins"));
-                                foodBundle.putSerializable("dayLog", extras.getSerializable("dayLog"));
-                                foodBundle.putSerializable("totalLog", extras.getSerializable("totalLog"));
-                                intent.putExtra("foodBundle", foodBundle);
+                                intent.putExtra("foodBundle", fBundleHelper());
                             }
                         }
+
+                        intent.putExtra("userBundle",uBundleHelper());
                         startActivity(intent);
                     }
                 }
@@ -74,11 +118,7 @@ public class UserScreen extends AppCompatActivity {
                 }
         );
 
-        cals = findViewById(R.id.textView6);
-        if (extras != null) { //set cals eaten
-            if (extras.containsKey("cals"))
-                cals.setText(extras.getString("cals"));
-        }
+
 
     }
 }

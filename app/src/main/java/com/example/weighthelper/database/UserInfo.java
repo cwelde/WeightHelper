@@ -1,27 +1,38 @@
 package com.example.weighthelper.database;
 
+import android.database.sqlite.SQLiteDatabase;
+
+
 public class UserInfo {
+    //each entry in the database is the information for one day
 
     public static final String TABLE_INFO = "info";
     public static final String COLUMN_ID = "userId";
-    public static final String COLUMN_LASTNAME = "lastName";
-    public static final String COLUMN_FIRSTNAME = "firstName";
-    public static final String COLUMN_AGE = "age";
-    public static final String COLUMN_WEIGHT = "WEIGHT";
-    public static final String COLUMN_HEIGHT = "height";
+    public static final String COLUMN_USERNAME = "username";
+    public static final String COLUMN_WEIGHT = "weight";
+    public static final String COLUMN_BMI = "bmi";
+    public static final String COLUMN_CAL = "cal";
     public static final String COLUMN_GOAL = "goal";
+    public static final String COLUMN_TOTAL_CAL = "totalCal";
+    public static final String COLUMN_TOTAL_PROTEIN = "totalProtein";
+    public static final String COLUMN_TOTAL_CARB = "totalCarb";
+    public static final String COLUMN_TOTAL_FAT = "totalFat";
 
     public static final String SQL_CREATE =
             "CREATE TABLE " + TABLE_INFO + "(" +
-                    COLUMN_ID + " TEXT PRIMARY KEY," +
-                    COLUMN_LASTNAME + " TEXT," +
-                    COLUMN_FIRSTNAME + " TEXT," +
-                    COLUMN_AGE + " INTEGER," +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    COLUMN_USERNAME + " TEXT," +
                     COLUMN_WEIGHT + " REAL," +
-                    COLUMN_HEIGHT + " REAL," +
-                    COLUMN_GOAL + " TEXT" + ");";
+                    COLUMN_BMI + " REAL," +
+                    COLUMN_CAL + " REAL," +
+                    COLUMN_GOAL + " REAL," +
+                    COLUMN_TOTAL_CAL + " REAL," +
+                    COLUMN_TOTAL_CARB + " REAL," +
+                    COLUMN_TOTAL_FAT + " REAL," +
+                    COLUMN_TOTAL_PROTEIN + " REAL" +
+                    ");";
 
     public static final String SQL_DELETE =
-            "DROP TABLE " + TABLE_INFO;
+            "DROP TABLE IF EXISTS " + TABLE_INFO;
 
 }

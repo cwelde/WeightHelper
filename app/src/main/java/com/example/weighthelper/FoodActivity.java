@@ -1,6 +1,7 @@
 package com.example.weighthelper;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -15,6 +16,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 
+import com.example.weighthelper.database.DBHelper;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONException;
@@ -39,6 +41,13 @@ public class FoodActivity extends AppCompatActivity {
     private TextView fatView;
     private TextView carbView;
     private TextView proteinView;
+    DBHelper db;
+    private long id; //for database row we are working with
+    private String username; //for inserting a new day entry
+    private double bmi;
+    private double cal;
+    private double weight;
+    private double goal;
 
     private ArrayList<String> names; //for user to select name from results of user search by name
     private ArrayList<String> ndbnos; //use for searching up nutrients
@@ -77,6 +86,14 @@ public class FoodActivity extends AppCompatActivity {
                 totalFats = Float.parseFloat(fBundle.getString("fats"));
                 totalProteins = Float.parseFloat(fBundle.getString("proteins"));
             }
+            if (extras.containsKey("userBundle")) {
+                Bundle uBundle = extras.getBundle("userBundle");
+                username = uBundle.getString("username");
+                bmi = uBundle.getDouble("bmi");
+                weight = uBundle.getDouble("weight");
+                cal = uBundle.getDouble("cal");
+                goal = uBundle.getDouble("goal");
+            }
         }
         setContentView(R.layout.food_search);
         searchButton = findViewById(R.id.searchButton);
@@ -107,28 +124,10 @@ public class FoodActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        db = new DBHelper(getApplicationContext());
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        // Save UI state changes to the savedInstanceState.
-        // This bundle will be passed to onCreate if the process is
-        // killed and restarted.
-        savedInstanceState.putInt("cals",totalCalories);
-        savedInstanceState.putSerializable("dayLog",logEntries);
-        savedInstanceState.putSerializable("totalLog",totalLog);
-    }
-
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        // Restore UI state from the savedInstanceState.
-        // This bundle has also been passed to onCreate.
-        totalCalories = savedInstanceState.getInt("cals");
-        logEntries = (ArrayList<FoodLog>) savedInstanceState.getSerializable("dayLog");
-        totalLog = (ArrayList<ArrayList<FoodLog>>) savedInstanceState.getSerializable("totalLog");
-    }
 
 
     public void searchFood(String food) {
@@ -229,6 +228,7 @@ public class FoodActivity extends AppCompatActivity {
                                     logEntries.get(logEntries.size()-1).setProtein(protein);
                                     logEntries.get(logEntries.size()-1).setCarb(carb);
                                     logEntries.get(logEntries.size()-1).setFat(fat);
+
                                     searchScreen(); //back to food search
                                 }
                             }
@@ -243,6 +243,12 @@ public class FoodActivity extends AppCompatActivity {
     public void newDay() { //adds current food log to list of logs, starts a new day (foodlog)
         totalLog.add(getLogEntries()); //add to list of logs
         logEntries.clear();
+
+        //update day entry in db
+        id = db.getLastInsertID();
+        db.setNutrition(id,totalCalories,totalProteins,totalCarbs,totalFats);
+        db.insertUser(username,0,0,0,0);
+
         totalCalories = 0;
         totalCarbs = 0;
         totalProteins = 0;
@@ -369,6 +375,11 @@ public class FoodActivity extends AppCompatActivity {
         i.putExtra("fats", getTotalFats());
         i.putExtra("carbs",getTotalCarbs());
         i.putExtra("proteins",getTotalProteins());
+        i.putExtra("bmi",bmi);
+        i.putExtra("cal",cal);
+        i.putExtra("weight",weight);
+        i.putExtra("goal",goal);
+        i.putExtra("username",username);
         startActivity(i);
     }
 
