@@ -27,11 +27,11 @@
         android:ems="10"
         android:hint="Age"
         android:inputType="number"
-        app:layout_constraintStart_toStartOf="@+id/editText3"
+        app:layout_constraintStart_toStartOf="@+id/feetText"
         app:layout_constraintTop_toBottomOf="@+id/editText" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/feetText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="88dp"
@@ -42,22 +42,22 @@
         android:ems="10"
         android:hint="Feet"
         android:inputType="number"
-        app:layout_constraintEnd_toStartOf="@+id/editText5"
+        app:layout_constraintEnd_toStartOf="@+id/inchesText1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText2" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/weightText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Weight (in lbs)"
         android:inputType="number"
-        app:layout_constraintStart_toStartOf="@+id/editText3"
-        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+        app:layout_constraintStart_toStartOf="@+id/feetText"
+        app:layout_constraintTop_toBottomOf="@+id/feetText" />
 
     <EditText
-        android:id="@+id/editText5"
+        android:id="@+id/inchesText1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="194dp"
@@ -65,9 +65,9 @@
         android:ems="10"
         android:hint="Inches"
         android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/editText4"
+        app:layout_constraintBottom_toTopOf="@+id/weightText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editText3" />
+        app:layout_constraintStart_toEndOf="@+id/feetText" />
 
     <TextView
         android:id="@+id/textView3"
@@ -77,8 +77,8 @@
         android:layout_marginLeft="1dp"
         android:layout_marginBottom="12dp"
         android:text="Height"
-        app:layout_constraintBottom_toTopOf="@+id/editText3"
-        app:layout_constraintStart_toStartOf="@+id/editText3" />
+        app:layout_constraintBottom_toTopOf="@+id/feetText"
+        app:layout_constraintStart_toStartOf="@+id/feetText" />
 
     <Button
         android:id="@+id/button"
@@ -93,5 +93,5 @@
         android:text="Next"
         app:layout_constraintEnd_toEndOf="@+id/editText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText4" />
+        app:layout_constraintTop_toBottomOf="@+id/weightText" />
 </android.support.constraint.ConstraintLayout>
