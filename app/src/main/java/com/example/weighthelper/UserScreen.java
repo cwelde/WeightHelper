@@ -1,11 +1,12 @@
 package com.example.weighthelper;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.weighthelper.database.DBHelper;
 
@@ -65,6 +66,21 @@ public class UserScreen extends AppCompatActivity {
 
         userScreen();
 
+        // If the Users eaten calories is 1.5x greater than the recommended calories
+        // We "recommend" that the user walk to work, or search for a nutrition recipe in our
+        // Database
+
+        TextView calEaten = findViewById(R.id.textView6);
+        String calE = calEaten.getText().toString();
+        double ce = Double.parseDouble(calE);
+        ce = ce * 1.5;
+
+        if(ce > cal)
+        {
+            Toast.makeText(getApplicationContext(), "We've noticed that your daily caloric intake is high, we recommend that you increase physical activity such as walking or biking" +
+                    " to work", Toast.LENGTH_LONG).show();
+        }
+
     }
 
     public Bundle fBundleHelper() {
@@ -104,7 +120,9 @@ public class UserScreen extends AppCompatActivity {
                         }
 
                         intent.putExtra("userBundle",uBundleHelper());
+
                         startActivity(intent);
+
                     }
                 }
         );
