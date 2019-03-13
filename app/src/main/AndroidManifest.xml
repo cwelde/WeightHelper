@@ -23,6 +23,7 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
+        <activity android:name=".Recipes" />
         <activity android:name=".FoodActivity" />
         <activity android:name=".SensorActivity" />
     </application>

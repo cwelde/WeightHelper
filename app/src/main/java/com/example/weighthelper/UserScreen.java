@@ -12,6 +12,7 @@ import com.example.weighthelper.database.DBHelper;
 public class UserScreen extends AppCompatActivity {
     Button foodLogBtn;
     Button activityBtn;
+    Button recipeBtn;
     TextView cals;
     private String username;
     private double bmi;
@@ -113,6 +114,16 @@ public class UserScreen extends AppCompatActivity {
                 new View.OnClickListener() {
                     public void onClick(View view) {
                         Intent intent = new Intent(UserScreen.this,SensorActivity.class);
+                        startActivity(intent);
+                    }
+                }
+        );
+
+        recipeBtn = findViewById(R.id.btnRecipes);
+        recipeBtn.setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View view) {
+                        Intent intent = new Intent(UserScreen.this,Recipes.class);
                         startActivity(intent);
                     }
                 }
