@@ -1,0 +1,97 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_activity_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    tools:context=".FoodActivity">
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/nSearch"
+        android:text="Search"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:id="@+id/nHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Home"/>
+    <TextView
+        android:id="@+id/nutrientHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nutrients"
+        android:layout_centerHorizontal="true"
+        android:textSize="40dp"
+        android:layout_below="@id/nHome"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="(in grams)"
+        android:layout_centerHorizontal="true"
+        android:textSize="20dp"
+        android:layout_below="@id/nutrientHeader"
+        android:id="@+id/blah"/>
+    <TextView
+        android:id="@+id/carbsHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginLeft="70dp"
+        android:text="Carbohydrates              "
+        android:textSize="20sp"
+        android:layout_below="@id/blah"/>
+    <TextView
+        android:id="@+id/fatsHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginLeft="70dp"
+        android:layout_below = "@+id/carbsHeader"
+        android:text="Fats                       "
+        android:textSize="20sp"/>
+    <TextView
+        android:id="@+id/proteinsHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginLeft="70dp"
+        android:layout_below = "@+id/fatsHeader"
+        android:text="Proteins                   "
+        android:textSize="20sp"/>
+    <TextView
+        android:id="@+id/carbs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_below="@+id/carbsHeader"
+        android:layout_alignRight="@+id/carbsHeader"
+        android:layout_alignLeft="@+id/carbsHeader"/>
+
+    <TextView
+        android:id="@+id/fats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_below="@+id/fatsHeader"
+        android:layout_alignRight="@+id/fatsHeader"
+        android:layout_alignLeft="@+id/fatsHeader"/>
+
+    <TextView
+        android:id="@+id/proteins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_below="@+id/proteinsHeader"
+        android:layout_alignRight="@+id/proteinsHeader"
+        android:layout_alignLeft="@+id/proteinsHeader"/>
+</RelativeLayout>
+
