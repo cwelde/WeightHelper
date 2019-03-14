@@ -53,9 +53,9 @@ public class UserScreen extends AppCompatActivity {
         textView4.setText(s3);
 
         cals = findViewById(R.id.textView6);
-        String test;
+        String eaten;
         if (bundle.containsKey("cals")) {
-            test = bundle.getString("cals");
+            eaten = bundle.getString("cals");
             cals.setText(bundle.getString("cals"));}
 
 
@@ -81,10 +81,30 @@ public class UserScreen extends AppCompatActivity {
                     " to work", Toast.LENGTH_LONG).show();
         }
 
+        double avg = db.getAvgCalories(username);
+        TextView avgView = findViewById(R.id.avgView);
+        avgView.setText(Double.toString(avg));
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Bundle extras = new Bundle();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+
+        }
     }
 
     public Bundle fBundleHelper() {
-        final Bundle extras = getIntent().getExtras();
+        Bundle extras = getIntent().getExtras();
         Bundle foodBundle = new Bundle();
         foodBundle.putString("cals", extras.getString("cals"));
         foodBundle.putString("fats", extras.getString("fats"));
