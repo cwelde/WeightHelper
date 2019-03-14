@@ -1,6 +1,7 @@
 package com.example.weighthelper;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -93,6 +94,7 @@ public class FoodActivity extends AppCompatActivity {
                 goal = uBundle.getDouble("goal");
             }
         }
+
         setContentView(R.layout.food_search);
         searchButton = findViewById(R.id.searchButton);
         text = findViewById(R.id.foodSearch);
@@ -124,6 +126,18 @@ public class FoodActivity extends AppCompatActivity {
         );
 
         db = new DBHelper(getApplicationContext());
+        Cursor entry = db.getLastEntry(username);
+        if (totalCalories == 0) { // new run of app -- set from database
+            try {
+                this.totalCalories = (int) entry.getDouble(6);
+                this.totalCarbs = (float) entry.getDouble(7);
+                this.totalFats = (float) entry.getDouble(8);
+                this.totalProteins = (float) entry.getDouble(9);
+
+            } catch(Exception e) {
+
+            }
+        }
     }
 
 
@@ -158,7 +172,6 @@ public class FoodActivity extends AppCompatActivity {
                                     logEntries.add(log); //add food to log
                                     String ndbno = ndbnos.get(position);
                                     searchNDBno(ndbno);
-                                    //searchNDBno("01009"); //hard code for cheddar cheese...
                                 }
                             }
                     );
@@ -243,7 +256,7 @@ public class FoodActivity extends AppCompatActivity {
         logEntries.clear();
 
         //update day entry in db
-        id = db.getLastInsertID();
+        id = db.getLastInsertID(username);
         db.setNutrition(id,totalCalories,totalProteins,totalCarbs,totalFats);
         db.insertUser(username,0,0,0,0);
 

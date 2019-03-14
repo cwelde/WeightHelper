@@ -37,8 +37,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean doesUserExist(String username) {
         SQLiteDatabase db = this.getWritableDatabase();
         String select = "SELECT * FROM " + UserInfo.TABLE_INFO + " WHERE " + UserInfo.COLUMN_USERNAME
-                + " =?";
-        Cursor cursor = db.rawQuery(select, new String[] {username});
+                + " ='"+username+"'";
+        Cursor cursor = db.rawQuery(select,null);
         boolean exist = false;
         if (cursor.moveToFirst()) {
             exist = true;
@@ -67,13 +67,36 @@ public class DBHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    public long getLastInsertID() {
+    public long getLastInsertID(String username) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String get = "SELECT " + UserInfo.COLUMN_ID + " FROM " + UserInfo.TABLE_INFO +"";
+        String get = "SELECT " + UserInfo.COLUMN_ID + " FROM " + UserInfo.TABLE_INFO +
+                " WHERE "+UserInfo.COLUMN_USERNAME + "='" + username + "'";
         Cursor cursor = db.rawQuery(get,null);
         cursor.moveToLast();
         long id = cursor.getLong(0);
+        cursor.close();
         return id;
+    }
+
+    public Cursor getLastEntry(String username) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String get = "SELECT * FROM " + UserInfo.TABLE_INFO +
+                " WHERE "+UserInfo.COLUMN_USERNAME + "='" + username + "'";
+        Cursor cursor = db.rawQuery(get,null);
+        cursor.moveToLast();
+        return cursor;
+    }
+
+    public double getAvgCalories(String username) {
+        double cal = 0.0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        String get = "SELECT AVG(" + UserInfo.COLUMN_TOTAL_CAL + ") as Total FROM " + UserInfo.TABLE_INFO +
+                " WHERE "+UserInfo.COLUMN_USERNAME + "='" + username + "'";
+        Cursor cursor = db.rawQuery(get,null);
+        if (cursor.moveToFirst()) {
+            cal = cursor.getInt(cursor.getColumnIndex("Total"));
+        }
+        return cal;
     }
 
     public boolean setNutrition(long id,double totalCal,double totalProtein,double totalCarb, double totalFat) { //sets user record with total calories
@@ -98,6 +121,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return true;
     }
+
 
 
 }
