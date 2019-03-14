@@ -1,8 +1,10 @@
 package com.example.weighthelper;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
@@ -307,6 +309,7 @@ public class FoodActivity extends AppCompatActivity {
             table.addView(row);
         }
 
+
         toSearchButton = findViewById(R.id.logSearch);
         toSearchButton.setOnClickListener(
                 new View.OnClickListener() {
@@ -404,6 +407,39 @@ public class FoodActivity extends AppCompatActivity {
         proteinView.setText(getTotalProteins());
         nHome = findViewById(R.id.nHome);
         nSearch = findViewById(R.id.nSearch);
+
+        String c = carbView.getText().toString();
+        double carbs = Double.parseDouble(c);
+
+        String p = proteinView.getText().toString();
+        double proteins = Double.parseDouble(p);
+
+        String f = proteinView.getText().toString();
+        double fats = Double.parseDouble(f);
+
+        double totalMacros = carbs + proteins + fats;
+
+        if (carbs > 0 && proteins > 0 && fats > 0)
+        {
+
+            if (carbs / totalMacros > .40)
+            {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder
+                        .setTitle("We've noticed your carbohydrate intake is relatively high today")
+                        .setMessage("Consider eating less carbs, we recommend: Broccoli, Chicken Breast, or Bacon")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton("Got it!", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                //Yes button clicked, do something
+
+                            }
+                        })
+                        .show();
+            }
+
+        }
+
 
         nHome.setOnClickListener(
                 new View.OnClickListener() {
