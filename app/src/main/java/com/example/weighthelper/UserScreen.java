@@ -142,6 +142,13 @@ public class UserScreen extends AppCompatActivity {
                 new View.OnClickListener() {
                     public void onClick(View view) {
                         Intent intent = new Intent(UserScreen.this,Recipes.class);
+                        if (extras != null) { //when changing back to food activity, transfer information
+                            if (extras.containsKey("totalLog")) {
+                                intent.putExtra("foodBundle", fBundleHelper());
+                            }
+                        }
+
+                        intent.putExtra("userBundle",uBundleHelper());
                         startActivity(intent);
                     }
                 }
