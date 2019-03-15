@@ -1,4 +1,5 @@
 package com.example.weighthelper;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
@@ -116,6 +117,16 @@ public class Recipes extends AppCompatActivity {
                                                 new View.OnClickListener() {
                                                     public void onClick(View view) {
                                                         setContentView(R.layout.recipe_results);
+                                                        get_Recipes();
+                                                    }
+                                                }
+                                        );
+                                        Button homeButton = findViewById(R.id.home);
+                                        homeButton.setOnClickListener(
+                                                new View.OnClickListener() {
+                                                    public void onClick(View view) {
+                                                        Intent i = new Intent(Recipes.this, UserScreen.class);
+                                                        startActivity(i);
                                                     }
                                                 }
                                         );
@@ -131,16 +142,16 @@ public class Recipes extends AppCompatActivity {
                                         recipe_ingredients.setAdapter(ing_adapter);
 
                                         TextView cals = findViewById(R.id.cals);
-                                        cals.setText(rec.getString("calories"));
+                                        cals.setText(Integer.toString((int)Double.parseDouble(rec.getString("calories"))));
 
                                         TextView fat = findViewById(R.id.fat);
-                                        fat.setText(rec.getJSONObject("totalNutrients").getJSONObject("FAT").getString("quantity"));
+                                        fat.setText(Integer.toString((int)Double.parseDouble(rec.getJSONObject("totalNutrients").getJSONObject("FAT").getString("quantity"))));
 
                                         TextView carbs = findViewById(R.id.carbs);
-                                        carbs.setText(rec.getJSONObject("totalNutrients").getJSONObject("CHOCDF").getString("quantity"));
+                                        carbs.setText(Integer.toString((int)Double.parseDouble(rec.getJSONObject("totalNutrients").getJSONObject("CHOCDF").getString("quantity"))));
 
                                         TextView proteins = findViewById(R.id.proteins);
-                                        proteins.setText(rec.getJSONObject("totalNutrients").getJSONObject("PROCNT").getString("quantity"));
+                                        proteins.setText(Integer.toString((int)Double.parseDouble(rec.getJSONObject("totalNutrients").getJSONObject("PROCNT").getString("quantity"))));
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -152,5 +163,9 @@ public class Recipes extends AppCompatActivity {
 
             }
         });
+    }
+
+    void home_screen(){
+
     }
 }
