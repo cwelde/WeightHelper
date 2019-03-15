@@ -414,12 +414,12 @@ public class FoodActivity extends AppCompatActivity {
         String p = proteinView.getText().toString();
         double proteins = Double.parseDouble(p);
 
-        String f = proteinView.getText().toString();
+        String f = fatView.getText().toString();
         double fats = Double.parseDouble(f);
 
         double totalMacros = carbs + proteins + fats;
 
-        if (carbs > 0 && proteins > 0 && fats > 0 && totalMacros >= 100)
+        if (carbs > 0 && proteins > 0 && fats > 0 && totalMacros > 100)
         {
 
             if (carbs / totalMacros > .40)
@@ -427,7 +427,23 @@ public class FoodActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder
                         .setTitle("We've noticed your carbohydrate intake is relatively high today")
-                        .setMessage("Consider eating less carbs, we recommend: Broccoli, Chicken Breast, or Bacon")
+                        .setMessage("Consider eating less carbs, we recommend: Broccoli, Steak, or Bacon")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton("Got it!", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                //Yes button clicked, do something
+
+                            }
+                        })
+                        .show();
+            }
+
+            if(fats / totalMacros > .40)
+            {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder
+                        .setTitle("We've noticed your Fat intake is relatively high today")
+                        .setMessage("Consider eating less fats, we recommend: Whole Green Vegetables, Chicken Breast, Diet Soda ")
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton("Got it!", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
