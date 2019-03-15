@@ -5,12 +5,23 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     tools:context=".SensorActivity">
+    <Button
+        android:id="@+id/sHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Home"/>
+
     <TextView
+        android:id="@+id/health"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Health Data"
         android:layout_centerHorizontal="true"
-        android:textSize="40dp"/>
+        android:textSize="40dp"
+        android:layout_below="@+id/sHome"
+        android:layout_marginTop="20dp"/>
     <TextView
         android:id="@+id/stepsHeader"
         android:layout_width="wrap_content"
@@ -19,7 +30,8 @@
         android:layout_marginStart="70dp"
         android:layout_marginLeft="70dp"
         android:text="Steps"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:layout_below="@+id/health"/>
     <TextView
         android:id="@+id/distanceHeader"
         android:layout_width="wrap_content"
@@ -29,7 +41,8 @@
         android:layout_marginEnd="70dp"
         android:layout_marginRight="70dp"
         android:text="Distance Traveled"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:layout_below="@+id/health"/>
     <TextView
         android:id="@+id/steps"
         android:layout_width="wrap_content"

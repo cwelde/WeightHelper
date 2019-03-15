@@ -20,6 +20,7 @@ public class UserScreen extends AppCompatActivity {
     private double cal;
     private double w;
     private double goal;
+    private int steps;
     Bundle extras;
 
     DBHelper db;
@@ -85,6 +86,9 @@ public class UserScreen extends AppCompatActivity {
         TextView avgView = findViewById(R.id.avgView);
         avgView.setText(Double.toString(avg));
 
+        if(bundle.containsKey("steps")) {
+            steps = bundle.getInt("steps");
+        }
     }
 
     @Override

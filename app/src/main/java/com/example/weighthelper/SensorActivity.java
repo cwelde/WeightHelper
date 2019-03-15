@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -44,7 +46,9 @@ import java.util.concurrent.TimeUnit;
 public class SensorActivity extends AppCompatActivity {
     public static final String TAG = "StepCounter";
     private static final int REQUEST_OAUTH_REQUEST_CODE = 0x1001;
+    public int numSteps;
     TextView steps;
+    Button home;
 
 
     @Override
@@ -71,6 +75,14 @@ public class SensorActivity extends AppCompatActivity {
             subscribe();
         }
 
+        home = findViewById(R.id.sHome);
+        home.setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View view) {
+                        homeScreen();
+                    }
+                }
+        );
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -120,6 +132,7 @@ public class SensorActivity extends AppCompatActivity {
                                                 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
                                 Log.i(TAG, "Total steps: " + total);
                                 steps.setText(Long.toString(total));
+                                numSteps = (int) total;
                             }
                         })
                 .addOnFailureListener(
@@ -130,6 +143,13 @@ public class SensorActivity extends AppCompatActivity {
                             }
                         });
     }
+
+    private void homeScreen() {
+        Intent i = new Intent(SensorActivity.this,UserScreen.class);
+        i.putExtra("steps",numSteps);
+        startActivity(i);
+    }
+
 
 }
 
