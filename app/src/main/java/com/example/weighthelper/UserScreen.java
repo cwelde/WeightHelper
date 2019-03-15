@@ -20,7 +20,9 @@ public class UserScreen extends AppCompatActivity {
     private double cal;
     private double w;
     private double goal;
-    private int steps;
+    private int steps = 0;
+    private double total;
+    private double burned = 0;
     Bundle extras;
 
     DBHelper db;
@@ -54,7 +56,7 @@ public class UserScreen extends AppCompatActivity {
         textView4.setText(s3);
 
         cals = findViewById(R.id.textView6);
-        String eaten;
+        String eaten = "0";
         if (bundle.containsKey("cals")) {
             eaten = bundle.getString("cals");
             cals.setText(bundle.getString("cals"));}
@@ -89,6 +91,17 @@ public class UserScreen extends AppCompatActivity {
         if(bundle.containsKey("steps")) {
             steps = bundle.getInt("steps");
         }
+
+        if( steps%20 == 0) {
+            burned = steps / 20;
+            TextView burnedView = findViewById(R.id.textView7);
+            burnedView.setText(Double.toString(burned));
+        }
+
+        TextView totalView = findViewById(R.id.textView8);
+        total = Double.parseDouble(eaten) - burned;
+        totalView.setText(Double.toString(total));
+
     }
 
     @Override
