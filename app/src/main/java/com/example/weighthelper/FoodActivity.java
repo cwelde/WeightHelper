@@ -419,7 +419,7 @@ public class FoodActivity extends AppCompatActivity {
 
         double totalMacros = carbs + proteins + fats;
 
-        if (carbs > 0 && proteins > 0 && fats > 0)
+        if (carbs > 0 && proteins > 0 && fats > 0 && totalMacros >= 100)
         {
 
             if (carbs / totalMacros > .40)
