@@ -17,6 +17,7 @@ public class UserInfo {
     public static final String COLUMN_TOTAL_PROTEIN = "totalProtein";
     public static final String COLUMN_TOTAL_CARB = "totalCarb";
     public static final String COLUMN_TOTAL_FAT = "totalFat";
+    public static final String COLUMN_NET_CAL = "netCal";
 
     public static final String SQL_CREATE =
             "CREATE TABLE " + TABLE_INFO + "(" +
@@ -29,7 +30,8 @@ public class UserInfo {
                     COLUMN_TOTAL_CAL + " REAL," +
                     COLUMN_TOTAL_CARB + " REAL," +
                     COLUMN_TOTAL_FAT + " REAL," +
-                    COLUMN_TOTAL_PROTEIN + " REAL" +
+                    COLUMN_TOTAL_PROTEIN + " REAL," +
+                    COLUMN_NET_CAL + " REAL"+
                     ");";
 
     public static final String SQL_DELETE =
