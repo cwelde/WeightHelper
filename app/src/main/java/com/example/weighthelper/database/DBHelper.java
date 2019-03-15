@@ -122,6 +122,17 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean setNetCal(long id, double netCal) { //sets net calories, including calories burned
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String updateCal = "UPDATE " + UserInfo.TABLE_INFO + " SET " + UserInfo.COLUMN_NET_CAL + " ="
+                +netCal+ " WHERE " + UserInfo.COLUMN_ID + " = " + id + "";
+
+        db.execSQL(updateCal);
+
+        return true;
+    }
+
 
 
 }
