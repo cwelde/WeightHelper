@@ -5,9 +5,9 @@
 Christopher Welde - cwelde@uci.edu, Alon Maor - maora@uci.edu, Vivian Lu - vlu4@uci.edu, David Sianov - dsianov@uci.edu 
 
 Source Files:
-FoodActivity.java - Gets Protein/Carbs/Fats from foods returned from search, stores in database, displays them on screen, saves values.
-FoodClient.java - Handles HTTP / API Calls for our food
-FoodLog.java - Helper class that helps store macronutrients and calories of a given food
+* FoodActivity.java - Gets Protein/Carbs/Fats from foods returned from search, stores in database, displays them on screen, saves values.
+* FoodClient.java - Handles HTTP / API Calls for our food
+* FoodLog.java - Helper class that helps store macronutrients and calories of a given food
 FoodNoSearch.java - Helper class that stores food from JSON format and food information in database
 MainActivity.java - Logic for collecting data from first screen the user sees. Stores that data and passes to other activities. inits DB.
 RecipeClient.java - Handles HTTP / API Calls for our recommended recipes
