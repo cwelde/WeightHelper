@@ -1,7 +1,7 @@
 # WeightHelper
-CS125 Project
+## CS125 Project
 
-Group 4 
+## Group 4 
 Christopher Welde - cwelde@uci.edu, Alon Maor - maora@uci.edu, Vivian Lu - vlu4@uci.edu, David Sianov - dsianov@uci.edu 
 
 Source Files:
