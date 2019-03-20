@@ -163,24 +163,4 @@ public class Recipes extends AppCompatActivity {
             }
         });
     }
-
-    void home_screen(){
-        Bundle extras = getIntent().getExtras();
-        fBundle = extras.getBundle("foodBundle");
-        uBundle = extras.getBundle("userBundle");
-
-        Intent i = new Intent(Recipes.this, UserScreen.class);
-        i.putExtra("cals", fBundle.getString("cals"));
-        i.putExtra("dayLog", fBundle.getSerializable("dayLog"));
-        i.putExtra("totalLog", fBundle.getSerializable("totalLog"));
-        i.putExtra("fats", fBundle.getString("fats"));
-        i.putExtra("carbs", fBundle.getString("carbs"));
-        i.putExtra("proteins",fBundle.getString("proteins"));
-        i.putExtra("bmi", uBundle.getDouble("bmi"));
-        i.putExtra("cal", uBundle.getDouble("cal"));
-        i.putExtra("weight", uBundle.getDouble("weight"));
-        i.putExtra("goal", uBundle.getDouble("goal"));
-        i.putExtra("username", uBundle.getString("username"));
-        startActivity(i);
-    }
 }
