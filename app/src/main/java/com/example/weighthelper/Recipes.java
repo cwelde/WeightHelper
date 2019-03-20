@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Checkable;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -33,26 +32,33 @@ public class Recipes extends AppCompatActivity {
     private int totalCarbs;
     private int totalFats;
     private int totalProteins;
-    private int goal;
+    private int cal;
+    private int nutrients_range = 10;
+    private int calorie_range = 100;
+    private Bundle fBundle;
+    private Bundle uBundle;
+    private Bundle extras;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle extras = getIntent().getExtras();
+        extras = getIntent().getExtras();
         setContentView(R.layout.recipe_results);
 
         if (extras != null) { //restoring data when switching between activities
             if (extras.containsKey("foodBundle")) {
-                Bundle fBundle = extras.getBundle("foodBundle");
+                fBundle = extras.getBundle("foodBundle");
                 totalCalories = Integer.parseInt(fBundle.getString("cals"));
                 totalCarbs = Integer.parseInt(fBundle.getString("carbs"));
                 totalFats = Integer.parseInt(fBundle.getString("fats"));
                 totalProteins = Integer.parseInt(fBundle.getString("proteins"));
             }
             if (extras.containsKey("userBundle")) {
-                Bundle uBundle = extras.getBundle("userBundle");
-                double goal_d = uBundle.getDouble("goal");
-                goal = (int)goal_d;
+                uBundle = extras.getBundle("userBundle");
+                double cal_d = uBundle.getDouble("cal");
+                System.out.println("goal_d: " + cal_d);
+                cal = (int)cal_d;
             }
         }
 
@@ -72,18 +78,19 @@ public class Recipes extends AppCompatActivity {
     }
 
     private void compRecipeNutrients(){
-        int goal_fat = (goal/2)/9; // 1/2 of daily calories from far, each calorie 1/9 gram of fat
-        int goal_carbs = (goal/4)/4; // 1/4 of daily calories from carbs, each calorie 1/4 gram of fat
-        int goal_protein = (goal/4)/4; // 1/4 of daily calories from protein, each calorie 1/4 gram of protein
+        int goal_fat = (cal/2)/9; // 1/2 of daily calories from far, each calorie 1/9 gram of fat
+        int goal_carbs = (cal/4)/4; // 1/4 of daily calories from carbs, each calorie 1/4 gram of fat
+        int goal_protein = (cal/4)/4; // 1/4 of daily calories from protein, each calorie 1/4 gram of protein
         int meal = findMeal();
-        int calories = (goal-totalCalories)/meal;
+        System.out.println("totalCalories: " + totalCalories + ", goal = "+ cal);
+        int calories = (cal-totalCalories)/meal;
         int fat = (goal_fat-totalFats)/meal;
         int carbs = (goal_carbs-totalCarbs)/meal;
         int protein = (goal_protein-totalProteins)/meal;
-        fat_range = Integer.toString(fat-3) +"-"+ Integer.toString(fat+3);
-        carbs_range = Integer.toString(carbs-3) +"-"+ Integer.toString(carbs+3);
-        protein_range = Integer.toString(protein-3) +"-"+ Integer.toString(protein+3);
-        cals_range = Integer.toString(calories-30) +"-"+ Integer.toString(calories+30);
+        fat_range = Integer.toString(fat-nutrients_range) +"-"+ Integer.toString(fat+nutrients_range);
+        carbs_range = Integer.toString(carbs-nutrients_range) +"-"+ Integer.toString(carbs+nutrients_range);
+        protein_range = Integer.toString(protein-nutrients_range) +"-"+ Integer.toString(protein+nutrients_range);
+        cals_range = Integer.toString(calories-calorie_range) +"-"+ Integer.toString(calories+calorie_range);
         System.out.println("fat_range: " + fat_range + ", carbs_range = "+ carbs_range+", protein_range " + protein_range+", calories: " +cals_range);
     }
 
@@ -121,15 +128,7 @@ public class Recipes extends AppCompatActivity {
                                                     }
                                                 }
                                         );
-                                        Button homeButton = findViewById(R.id.home);
-                                        homeButton.setOnClickListener(
-                                                new View.OnClickListener() {
-                                                    public void onClick(View view) {
-                                                        Intent i = new Intent(Recipes.this, UserScreen.class);
-                                                        startActivity(i);
-                                                    }
-                                                }
-                                        );
+
                                         ArrayList<String> ingredient_list = new ArrayList<String>();
                                         JSONObject rec = responseBody.getJSONArray("hits").getJSONObject(position).getJSONObject("recipe");
                                         JSONArray ingredient_arr = rec.getJSONArray("ingredientLines");
@@ -166,6 +165,22 @@ public class Recipes extends AppCompatActivity {
     }
 
     void home_screen(){
+        Bundle extras = getIntent().getExtras();
+        fBundle = extras.getBundle("foodBundle");
+        uBundle = extras.getBundle("userBundle");
 
+        Intent i = new Intent(Recipes.this, UserScreen.class);
+        i.putExtra("cals", fBundle.getString("cals"));
+        i.putExtra("dayLog", fBundle.getSerializable("dayLog"));
+        i.putExtra("totalLog", fBundle.getSerializable("totalLog"));
+        i.putExtra("fats", fBundle.getString("fats"));
+        i.putExtra("carbs", fBundle.getString("carbs"));
+        i.putExtra("proteins",fBundle.getString("proteins"));
+        i.putExtra("bmi", uBundle.getDouble("bmi"));
+        i.putExtra("cal", uBundle.getDouble("cal"));
+        i.putExtra("weight", uBundle.getDouble("weight"));
+        i.putExtra("goal", uBundle.getDouble("goal"));
+        i.putExtra("username", uBundle.getString("username"));
+        startActivity(i);
     }
 }
