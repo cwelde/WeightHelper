@@ -50,9 +50,9 @@ public class Recipes extends AppCompatActivity {
             if (extras.containsKey("foodBundle")) {
                 fBundle = extras.getBundle("foodBundle");
                 totalCalories = Integer.parseInt(fBundle.getString("cals"));
-                totalCarbs = Integer.parseInt(fBundle.getString("carbs"));
-                totalFats = Integer.parseInt(fBundle.getString("fats"));
-                totalProteins = Integer.parseInt(fBundle.getString("proteins"));
+                totalCarbs = (int)Double.parseDouble(fBundle.getString("carbs"));
+                totalFats = (int)Double.parseDouble(fBundle.getString("fats"));
+                totalProteins = (int)Double.parseDouble(fBundle.getString("proteins"));
             }
             if (extras.containsKey("userBundle")) {
                 uBundle = extras.getBundle("userBundle");
