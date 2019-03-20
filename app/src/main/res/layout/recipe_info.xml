@@ -5,13 +5,6 @@
     android:layout_height="match_parent"
     android:padding="5dp">
 
-    <Button
-        android:id="@+id/home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="150dp"
-        android:layout_marginTop="20dp"
-        android:text="Home"/>
 
 
     <Button

@@ -1,5 +1,4 @@
 package com.example.weighthelper;
-import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Checkable;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,16 +29,15 @@ public class Recipes extends AppCompatActivity {
     private String protein_range;
     private String diet = "";
     private int totalCalories;
-    private int totalCarbs;
-    private int totalFats;
-    private int totalProteins;
+    private float totalCarbs;
+    private float totalFats;
+    private float totalProteins;
     private int cal;
     private int nutrients_range = 10;
     private int calorie_range = 100;
     private Bundle fBundle;
     private Bundle uBundle;
     private Bundle extras;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +49,9 @@ public class Recipes extends AppCompatActivity {
             if (extras.containsKey("foodBundle")) {
                 fBundle = extras.getBundle("foodBundle");
                 totalCalories = Integer.parseInt(fBundle.getString("cals"));
-                totalCarbs = (int)Double.parseDouble(fBundle.getString("carbs"));
-                totalFats = (int)Double.parseDouble(fBundle.getString("fats"));
-                totalProteins = (int)Double.parseDouble(fBundle.getString("proteins"));
+                totalCarbs = Float.parseFloat(fBundle.getString("carbs"));
+                totalFats = Float.parseFloat(fBundle.getString("fats"));
+                totalProteins = Float.parseFloat(fBundle.getString("proteins"));
             }
             if (extras.containsKey("userBundle")) {
                 uBundle = extras.getBundle("userBundle");
@@ -71,25 +70,25 @@ public class Recipes extends AppCompatActivity {
         int time = calendar.get(Calendar.HOUR_OF_DAY);
         if (time > 5 && time < 11)
             return 3;
-        else if (time >= 11 && time < 4)
+        else if (time >= 11 && time < 16)
             return 2;
         else
             return 1;
     }
 
     private void compRecipeNutrients(){
-        int goal_fat = (cal/2)/9; // 1/2 of daily calories from far, each calorie 1/9 gram of fat
-        int goal_carbs = (cal/4)/4; // 1/4 of daily calories from carbs, each calorie 1/4 gram of fat
-        int goal_protein = (cal/4)/4; // 1/4 of daily calories from protein, each calorie 1/4 gram of protein
+        float goal_fat = (cal/2)/9; // 1/2 of daily calories from far, each calorie 1/9 gram of fat
+        float goal_carbs = (cal/4)/4; // 1/4 of daily calories from carbs, each calorie 1/4 gram of fat
+        float goal_protein = (cal/4)/4; // 1/4 of daily calories from protein, each calorie 1/4 gram of protein
         int meal = findMeal();
         System.out.println("totalCalories: " + totalCalories + ", goal = "+ cal);
         int calories = (cal-totalCalories)/meal;
-        int fat = (goal_fat-totalFats)/meal;
-        int carbs = (goal_carbs-totalCarbs)/meal;
-        int protein = (goal_protein-totalProteins)/meal;
-        fat_range = Integer.toString(fat-nutrients_range) +"-"+ Integer.toString(fat+nutrients_range);
-        carbs_range = Integer.toString(carbs-nutrients_range) +"-"+ Integer.toString(carbs+nutrients_range);
-        protein_range = Integer.toString(protein-nutrients_range) +"-"+ Integer.toString(protein+nutrients_range);
+        float fat = (goal_fat-totalFats)/meal;
+        float carbs = (goal_carbs-totalCarbs)/meal;
+        float protein = (goal_protein-totalProteins)/meal;
+        fat_range = Float.toString(fat-nutrients_range) +"-"+ Float.toString(fat+nutrients_range);
+        carbs_range = Float.toString(carbs-nutrients_range) +"-"+ Float.toString(carbs+nutrients_range);
+        protein_range = Float.toString(protein-nutrients_range) +"-"+ Float.toString(protein+nutrients_range);
         cals_range = Integer.toString(calories-calorie_range) +"-"+ Integer.toString(calories+calorie_range);
         System.out.println("fat_range: " + fat_range + ", carbs_range = "+ carbs_range+", protein_range " + protein_range+", calories: " +cals_range);
     }
@@ -124,11 +123,9 @@ public class Recipes extends AppCompatActivity {
                                                 new View.OnClickListener() {
                                                     public void onClick(View view) {
                                                         setContentView(R.layout.recipe_results);
-                                                        get_Recipes();
                                                     }
                                                 }
                                         );
-
                                         ArrayList<String> ingredient_list = new ArrayList<String>();
                                         JSONObject rec = responseBody.getJSONArray("hits").getJSONObject(position).getJSONObject("recipe");
                                         JSONArray ingredient_arr = rec.getJSONArray("ingredientLines");
@@ -141,16 +138,16 @@ public class Recipes extends AppCompatActivity {
                                         recipe_ingredients.setAdapter(ing_adapter);
 
                                         TextView cals = findViewById(R.id.cals);
-                                        cals.setText(Integer.toString((int)Double.parseDouble(rec.getString("calories"))));
+                                        cals.setText(rec.getString("calories"));
 
                                         TextView fat = findViewById(R.id.fat);
-                                        fat.setText(Integer.toString((int)Double.parseDouble(rec.getJSONObject("totalNutrients").getJSONObject("FAT").getString("quantity"))));
+                                        fat.setText(rec.getJSONObject("totalNutrients").getJSONObject("FAT").getString("quantity"));
 
                                         TextView carbs = findViewById(R.id.carbs);
-                                        carbs.setText(Integer.toString((int)Double.parseDouble(rec.getJSONObject("totalNutrients").getJSONObject("CHOCDF").getString("quantity"))));
+                                        carbs.setText(rec.getJSONObject("totalNutrients").getJSONObject("CHOCDF").getString("quantity"));
 
                                         TextView proteins = findViewById(R.id.proteins);
-                                        proteins.setText(Integer.toString((int)Double.parseDouble(rec.getJSONObject("totalNutrients").getJSONObject("PROCNT").getString("quantity"))));
+                                        proteins.setText(rec.getJSONObject("totalNutrients").getJSONObject("PROCNT").getString("quantity"));
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
